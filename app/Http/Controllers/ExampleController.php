@@ -8,6 +8,9 @@ class ExampleController extends Controller
 {
     public function create(Request $request) {
         try {
+            $request->validate([
+                'n' => 'required|integer'
+            ]);
             $value = (int) $request->input('n');
             $list = array();
             for ($i = 1; $i <= 10; $i++) {
