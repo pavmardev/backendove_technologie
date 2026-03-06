@@ -17,4 +17,6 @@ This repository is for learning school purposes.
 <img width="2560" height="1600" alt="Snímka obrazovky (388)" src="https://github.com/user-attachments/assets/77614495-0a6e-4ed4-8d33-a80047684371" />
 <img width="2560" height="1600" alt="Snímka obrazovky (389)" src="https://github.com/user-attachments/assets/36ed1143-28e8-476c-8fa8-1a36b260dd34" />
 <img width="2560" height="1600" alt="Snímka obrazovky (382)" src="https://github.com/user-attachments/assets/085e8b5c-d60c-4ab8-98de-9024fafb142c" />
-<img width="2560" height="1600" alt="Snímka obrazovky (383)" src="https://github.com/user-attachments/assets/92ea16c8-8d7d-4af3-9c9c-58980a1bdd0c" />
+<img width="2560" height="1600" alt="Snímka obrazovky (383)" src="https://github.com/user-attachments/assets/92ea16c8-8d7d-4af3-9c9c-58980a1bdd0c" /><img width="2560" height="1600" alt="Snímka obrazovky (390)" src="https://github.com/user-attachments/assets/ed64a86f-c1f0-489d-96b5-95c162f19692" />
+
+<img width="2560" height="1600" alt="Snímka obrazovky (391)" src="https://github.com/user-attachments/assets/985945a9-8125-4e3d-acec-2bbc96b23d54" />
