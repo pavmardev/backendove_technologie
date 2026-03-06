@@ -7,53 +7,14 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About Repository
+This repository is for learning school purposes.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<img width="2560" height="1600" alt="Snímka obrazovky (384)" src="https://github.com/user-attachments/assets/4521e837-b6ec-4482-98bb-1797874ed5ec" />
+<img width="2560" height="1600" alt="Snímka obrazovky (385)" src="https://github.com/user-attachments/assets/ec8389d1-a191-4d27-a747-263bfc2c5304" />
+<img width="2560" height="1600" alt="Snímka obrazovky (386)" src="https://github.com/user-attachments/assets/1e1ec056-934d-438c-a9b0-ecbd2bf4acca" />
+<img width="2560" height="1600" alt="Snímka obrazovky (387)" src="https://github.com/user-attachments/assets/605f768b-0ce5-48a2-a1a1-98e9a7a8d2bb" />
+<img width="2560" height="1600" alt="Snímka obrazovky (388)" src="https://github.com/user-attachments/assets/77614495-0a6e-4ed4-8d33-a80047684371" />
+<img width="2560" height="1600" alt="Snímka obrazovky (389)" src="https://github.com/user-attachments/assets/36ed1143-28e8-476c-8fa8-1a36b260dd34" />
+<img width="2560" height="1600" alt="Snímka obrazovky (382)" src="https://github.com/user-attachments/assets/085e8b5c-d60c-4ab8-98de-9024fafb142c" />
+<img width="2560" height="1600" alt="Snímka obrazovky (383)" src="https://github.com/user-attachments/assets/92ea16c8-8d7d-4af3-9c9c-58980a1bdd0c" />
