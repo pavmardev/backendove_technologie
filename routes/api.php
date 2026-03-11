@@ -11,8 +11,9 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\InvokableExerciseController;
 use \App\Http\Controllers\ErestApiController;
 use App\Http\Controllers\ErpcController;
+use App\Http\Controllers\NoteController;
 
-Route::post('/rpc/books/{id}/borrow', [BookRpcController::class, 'borrowBook']);
+/*Route::post('/rpc/books/{id}/borrow', [BookRpcController::class, 'borrowBook']);
 Route::post('/rpc/books/{id}/return', [BookRpcController::class, 'returnBook']);
 Route::post('/example', [ExerciseController::class, 'pozicanieKnihy']);
 Route::post('example/{year}', [ExerciseController::class, 'vratenieKnihy']);
@@ -41,4 +42,16 @@ Route::get('/currtime/rpc', [ErpcController::class, 'getTime']);
 
 Route::get('/time', [RestTimeController::class, 'getTime']);
 Route::get('/rpc/time', [RpcTimeController::class, 'getTime']);
+*/
+
+
+Route::apiresource('db',NoteController::class);
+
+Route::get('notes/stats/status', [NoteController::class, 'statsByStatus']);
+
+Route::patch('notes/actions/archive-old-drafts', [NoteController::class, 'archiveOldDrafts']);
+
+Route::get('users/{user}/notes', [NoteController::class, 'userNotesWithCategories']);
+
+Route::get('notes-actions/search', [NoteController::class, 'search']);
 
