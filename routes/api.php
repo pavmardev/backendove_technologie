@@ -12,6 +12,7 @@ use App\Http\Controllers\InvokableExerciseController;
 use \App\Http\Controllers\ErestApiController;
 use App\Http\Controllers\ErpcController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\CategoriesController;
 
 /*Route::post('/rpc/books/{id}/borrow', [BookRpcController::class, 'borrowBook']);
 Route::post('/rpc/books/{id}/return', [BookRpcController::class, 'returnBook']);
@@ -54,4 +55,8 @@ Route::patch('notes/actions/archive-old-drafts', [NoteController::class, 'archiv
 Route::get('users/{user}/notes', [NoteController::class, 'userNotesWithCategories']);
 
 Route::get('notes-actions/search', [NoteController::class, 'search']);
+
+Route::get('not/{user}', [NoteController::class,'notesByUser']);
+
+Route::apiResource('categories', CategoriesController::class);
 

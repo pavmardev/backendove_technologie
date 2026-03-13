@@ -20,6 +20,11 @@ class CategorySeeder extends Seeder
             ['name' => 'Osobné', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'Nápady', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'TODO', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Hobby', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Šport', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Knihy', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Varenie', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Jazyky', 'created_at' => $now, 'updated_at' => $now],
         ]);
     }
 }

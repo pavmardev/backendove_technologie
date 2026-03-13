@@ -154,4 +154,13 @@ class NoteController extends Controller
             'notes' => $notes,
         ], Response::HTTP_OK);
     }
+
+    public function notesByUser(int $user_id) {
+        $notes = DB::table('notes')
+            ->select('notes.title')
+            ->where('user_id', $user_id)
+            ->get();
+
+        return response()->json(['notes' => $notes], Response::HTTP_OK);
+    }
 }
