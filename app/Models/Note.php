@@ -82,7 +82,7 @@ class Note extends Model
             return response()->json(['message' => 'Note not found'], 404);
         };
 
-        $note->update(['archive' => true]);
+        $note->update(['status' => 'archived']);
         return response()->json(['message' => 'Note archived'], 200);
     }
 
@@ -92,7 +92,7 @@ class Note extends Model
             return response()->json(['message' => 'Note not found'], 404);
         };
 
-        $note->update(['publish' => true]);
+        $note->update(['status' => 'published']);
         return response()->json(['message' => 'Note published'], 200);
     }
 }
