@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 class CategoriesController extends Controller
 {
@@ -13,8 +14,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = DB::table('categories')
-            ->get();
+        $categories = Category::query();
 
         return response()->json(['categories' => $categories]);
     }
@@ -24,12 +24,16 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('categories')
+        /*DB::table('categories')
             ->insert([
                 'name' => $request->name,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+        */
+        Category::create([
+            'name' => $request->name
+        ]);
 
         return response('Kategoria bola uspešne pridana', Response::HTTP_CREATED);
     }
@@ -39,9 +43,15 @@ class CategoriesController extends Controller
      */
     public function show(string $id)
     {
-        $categories = DB::table('categories')
+        /*$categories = DB::table('categories')
             ->where('id', $id)
             ->get();
+        */
+        $categories = Category::query()->find($id);
+
+        if (!$categories) {
+            return response('Kategoria nenajdena', Response::HTTP_NOT_FOUND);
+        }
 
         return response()->json(['category' => $categories], Response::HTTP_OK);
     }
@@ -51,9 +61,19 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        DB::table('categories')
+        /*DB::table('categories')
             ->where('id', $id)
             ->update(['name' => $request->name]);
+        */
+        $category = Category::query()->find($id);
+
+        if (!$category) {
+            return response('Kategoria nebola najdena', Response::HTTP_NOT_FOUND);
+        }
+
+        $category->update([
+            'name' => $request->name
+        ]);
 
         return response('Kategoria bola aktualizovana', Response::HTTP_OK);
     }
@@ -63,9 +83,18 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        DB::table('categories')
+        /*DB::table('categories')
             ->where('id', $id)
             ->delete();
+
+        */
+        $category = Category::query()->find($id);
+
+        if (!$category) {
+            return response('Kategoria nebola najdena', Response::HTTP_NOT_FOUND);
+        }
+
+        $category->delete();
 
         return response('Kategoria bola odstranena', Response::HTTP_OK);
     }
