@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
+        /*DB::table('users')->insert([
             [
                 'first_name' => 'Pán',
                 'last_name' => 'Admin',
@@ -95,5 +96,33 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+        */
+        User::create([
+            'first_name' => 'Pán',
+            'last_name' => 'Admin',
+            'email' => 'admin@ukf.sk',
+            'password' => '123',
+            'role' => 'admin',
+            'premium_until' => null,
+        ]);
+
+        User::create([
+            'first_name' => 'Dávid',
+            'last_name' => 'Držík',
+            'email' => 'ddrzik@ukf.sk',
+            'password' => '456',
+            'role' => 'user',
+            'premium_until' => now()->addDays(30),
+        ]);
+
+        User::create([
+            'first_name' => 'Jozef',
+            'last_name' => 'Kapusta',
+            'email' => 'jkapusta@ukf.sk',
+            'password' => '789',
+            'role' => 'user',
+            'premium_until' => null,
+        ]);
+
     }
 }

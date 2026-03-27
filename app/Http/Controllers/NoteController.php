@@ -6,6 +6,7 @@ use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class NoteController extends Controller
 {
@@ -19,11 +20,29 @@ class NoteController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
         */
+
+        /*
         $notes = Note::query()
             ->orderByDesc('notes.updated_at')
             ->get();
 
         return response()->json(['notes' => $notes], Response::HTTP_OK);
+    }*/
+        $notes = Note::query()
+            ->select(['id', 'user_id', 'title', 'body', 'status', 'is_pinned', 'created_at'])
+            ->with([
+                'user:id,first_name,last_name',
+                'categories:id,name,color',
+            ])
+            ->orderByDesc('is_pinned')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json([
+            'notes' => $notes,
+        ], Response::HTTP_OK);
+
+
     }
 
     /**
@@ -40,7 +59,7 @@ class NoteController extends Controller
         ]);
         */
 
-        $note = Note::create([
+        /*$note = Note::create([
             'user_id' => $request->user_id,
             'title' => $request->title,
             'body' => $request->body,
@@ -48,7 +67,41 @@ class NoteController extends Controller
 
 
         return response()->json(['message' => 'Note created', 'note' => $note], Response::HTTP_CREATED);
+        */
+
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'body'  => ['nullable', 'string'],
+            'status' => ['sometimes', 'required', 'string', Rule::in(['draft', 'published', 'archived'])],
+            'is_pinned' => ['sometimes', 'boolean'],
+
+            'categories' => ['sometimes', 'array', 'max:3'],
+            'categories.*' => ['integer', 'distinct', 'exists:categories,id'],
+        ]);
+
+        $note = Note::create([
+            'user_id'   => $validated['user_id'],
+            'title'     => $validated['title'],
+            'body'      => $validated['body'] ?? null,
+            'status'    => $validated['status'] ?? 'draft',
+            'is_pinned' => $validated['is_pinned'] ?? false,
+        ]);
+
+        if (!empty($validated['categories'])) {
+            $note->categories()->sync($validated['categories']);
+        }
+
+        return response()->json([
+            'message' => 'Poznámka bola úspešne vytvorená.',
+            'note' => $note->load([
+                'user:id,first_name,last_name',
+                'categories:id,name,color',
+            ]),
+        ], Response::HTTP_CREATED);
     }
+
 
     /**
      * Display the specified resource.
@@ -66,10 +119,14 @@ class NoteController extends Controller
         }
         */
 
-        $note = Note::find($id);
+        $note = Note::with(['user:id,first_name,last_name', 'categories:id,name,color',
+                            'comments:id,user_id,body',
+                            'tasks.comments:id,user_id,body',])
+            ->find($id);
             if (!$note) {
                 return response()->json(['message' => 'Note not found'], Response::HTTP_NOT_FOUND);
             }
+
         return response()->json(['note' => $note], Response::HTTP_OK);
     }
 
@@ -78,7 +135,7 @@ class NoteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $note = Note::find($id);
+        /*$note = Note::find($id);
 
         if (!$note) {
             return response()->json([
@@ -92,12 +149,47 @@ class NoteController extends Controller
             'updated_at' => now(),
         ]);
         */
-        $note->update([
+        /*$note->update([
             'title' => $request->title,
             'body' => $request->body,
         ]);
 
         return response()->json(['message' => 'Note updated'], Response::HTTP_OK);
+        */
+        $note = Note::find($id);
+
+        if (!$note) {
+            return response()->json(
+                ['message' => 'Poznámka nenájdená.'],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'body'  => ['nullable', 'string'],
+            'status' => ['sometimes', 'required', 'string', Rule::in(['draft', 'published', 'archived'])],
+            'is_pinned' => ['sometimes', 'boolean'],
+            'categories' => ['sometimes', 'array'],
+            'categories.*' => ['integer', 'distinct', 'exists:categories,id'],
+        ]);
+
+        // aktualizujeme iba to, čo prešlo validáciou
+        $note->update($validated);
+
+        // spoj. tabulku synchronizujeme iba ak boli poslané idčka
+        if (array_key_exists('categories', $validated)) {
+            $note->categories()->sync($validated['categories']);
+        }
+
+        return response()->json([
+            'message' => 'Poznámka bola aktualizovaná.',
+            'note' => $note->load([
+                'user:id,first_name,last_name',
+                'categories:id,name,color',
+            ]),
+        ], Response::HTTP_OK);
+
     }
 
     /**

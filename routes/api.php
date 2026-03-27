@@ -4,6 +4,7 @@ use App\Http\Controllers\BookApiController;
 use App\Http\Controllers\BookRestController;
 use App\Http\Controllers\BookRpcController;
 use App\Http\Controllers\BookSacController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RestTimeController;
 use App\Http\Controllers\RpcTimeController;
@@ -47,8 +48,11 @@ Route::get('/rpc/time', [RpcTimeController::class, 'getTime']);
 
 
 Route::apiresource('db',NoteController::class);
+Route::apiResource('notes.tasks', TaskController::class)->scoped();
 
 Route::get('notes/stats/status', [NoteController::class, 'statsByStatus']);
+
+Route::post('notes', [NoteController::class, 'store']);
 
 Route::patch('notes/actions/archive-old-drafts', [NoteController::class, 'archiveOldDrafts']);
 

@@ -31,9 +31,19 @@ class CategoriesController extends Controller
                 'updated_at' => now()
             ]);
         */
-        Category::create([
-            'name' => $request->name
+
+
+        $validate = $request->validate([
+            'name' => ['required', 'unique:categories,name']
         ]);
+
+        $cat = Category::create([
+            'name' => $validate['name'],
+        ]);
+
+        if (!empty($validate['name'])) {
+            $cat->categories()->sync($validate['name']);
+        }
 
         return response('Kategoria bola uspešne pridana', Response::HTTP_CREATED);
     }
