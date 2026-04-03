@@ -70,10 +70,43 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->tokens()->delete();
 
         return response()->json([
             'message' => 'Používateľ bol odhlásený z aktuálneho zariadenia.',
         ], Response::HTTP_OK);
+    }
+
+    public function resetPassword(Request $request) {
+
+        $user = $request->user();
+        $validated = $request->validate([
+            'old_password' => ['required', 'string'],
+            'new_password' => ['required', 'string', 'min:8', 'confirmed']
+        ]);
+
+        if (Hash::check($validated['old_password'], $user->password)) {
+            $user->update(['password' => Hash::make($validated['new_password'])]);
+            $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
+            return response()->json(['Zmena hesla prebehla uspesne'], Response::HTTP_OK);
+        } else {
+            return response()->json(['Pri zmene hesla nastala chyba'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+    }
+
+    public function editProfile(Request $request) {
+        $user = $request->user();
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'min:2', 'max:128'],
+            'last_name'  => ['required', 'string', 'min:2', 'max:128'],
+        ]);
+
+        if ($user->update($validated)) {
+            return response()->json(['uprava bola uspesna'], Response::HTTP_OK);
+        }
+        else {
+            return response()->json(['uprava nebola uspesna'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }

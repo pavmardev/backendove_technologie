@@ -80,5 +80,7 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/edit-profile', [AuthController::class, 'editProfile']);
     });
 });
