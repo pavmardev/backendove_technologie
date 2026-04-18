@@ -28,6 +28,7 @@ class NoteController extends Controller
 
         return response()->json(['notes' => $notes], Response::HTTP_OK);
     }*/
+        $this->authorize('viewAny', Note::class);
         $notes = Note::query()
             ->select(['id', 'user_id', 'title', 'body', 'status', 'is_pinned', 'created_at'])
             ->with([
@@ -36,13 +37,31 @@ class NoteController extends Controller
             ])
             ->orderByDesc('is_pinned')
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(5);
 
         return response()->json([
             'notes' => $notes,
         ], Response::HTTP_OK);
 
 
+    }
+    public function myNotes(Request $request)
+    {
+        $this->authorize('viewAny', Note::class);
+
+        $notes = $request->user()
+            ->notes()
+            ->select(['id', 'user_id', 'title', 'body', 'status', 'is_pinned', 'created_at'])
+            ->with([
+                'categories:id,name,color',
+            ])
+            ->orderByDesc('is_pinned')
+            ->orderByDesc('created_at')
+            ->paginate(5);
+
+        return response()->json([
+            'notes' => $notes,
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -69,7 +88,7 @@ class NoteController extends Controller
         return response()->json(['message' => 'Note created', 'note' => $note], Response::HTTP_CREATED);
         */
 
-        $validated = $request->validate([
+        /*$validated = $request->validate([
             'user_id' => ['required', 'integer', 'exists:users,id'],
 
             'title' => ['required', 'string', 'min:3', 'max:255'],
@@ -87,7 +106,27 @@ class NoteController extends Controller
             'body'      => $validated['body'] ?? null,
             'status'    => $validated['status'] ?? 'draft',
             'is_pinned' => $validated['is_pinned'] ?? false,
+        ]);*/
+        $this->authorize('create', Note::class);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'body'  => ['nullable', 'string'],
+            'status' => ['sometimes', 'required', 'string', Rule::in(['draft', 'published', 'archived'])],
+            'is_pinned' => ['sometimes', 'boolean'],
+
+            'categories' => ['sometimes', 'array', 'max:3'],
+            'categories.*' => ['integer', 'distinct', 'exists:categories,id'],
         ]);
+
+            $note = Note::create([
+                'user_id' => $request->user()->id,
+                'title'     => $validated['title'],
+                'body'      => $validated['body'] ?? null,
+                'status'    => $validated['status'] ?? 'draft',
+                'is_pinned' => $validated['is_pinned'] ?? false,
+            ]);
+
 
         if (!empty($validated['categories'])) {
             $note->categories()->sync($validated['categories']);
@@ -118,7 +157,6 @@ class NoteController extends Controller
                 Response::HTTP_NOT_FOUND);
         }
         */
-
         $note = Note::with(['user:id,first_name,last_name', 'categories:id,name,color',
                             'comments:id,user_id,body',
                             'tasks.comments:id,user_id,body',])
@@ -126,6 +164,7 @@ class NoteController extends Controller
             if (!$note) {
                 return response()->json(['message' => 'Note not found'], Response::HTTP_NOT_FOUND);
             }
+        $this->authorize('view', $note);
 
         return response()->json(['note' => $note], Response::HTTP_OK);
     }
@@ -164,6 +203,8 @@ class NoteController extends Controller
                 Response::HTTP_NOT_FOUND
             );
         }
+
+        $this->authorize('update', $note);
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -209,6 +250,7 @@ class NoteController extends Controller
             'updated_at' => now(),
         ]);
         */
+        $this->authorize('delete', $note);
         $note->delete();
 
         return response()->json(['message' => 'Note deleted'], Response::HTTP_OK);

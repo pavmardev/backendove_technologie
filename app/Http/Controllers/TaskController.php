@@ -5,15 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Note $note)
     {
-        //
+        // kto môže vidieť note, môže vidieť aj jej tasky
+        $this->authorize('view', [Task::class, $note]);
+
+        $tasks = $note->tasks()
+            ->orderBy('created_at')
+            ->get();
+
+        return response()->json([
+            'tasks' => $tasks,
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -21,7 +32,21 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Note::class);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'body'  => ['nullable', 'string'],
+            'is_done' => ['required']
+        ]);
+
+        $task = Task::create([
+            'title'     => $validated['title'],
+            'body'      => $validated['body'] ?? null,
+            'is_done'    => $validated['is_done'] ?? 'draft',
+        ]);
+
+        return response()->json(['task' => $task]);
     }
 
     /**
@@ -29,7 +54,13 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $task = Task::find($id);
+        if (!$task) {
+            return response()->json(['Nenaslo sa'], Response::HTTP_NOT_FOUND);
+        }
+        $this->authorize('view', $task);
+        return response()->json(['task' => $task], Response::HTTP_OK);
+
     }
 
     /**
@@ -57,6 +88,14 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $task = Task::find($id);
+        if (!$task) {
+            return response()->json([
+                'message' => 'Task nenájdený.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+        $this->authorize('delete', $task);
+        $task->delete();
+        return response()->json(['message' => 'Task deleted'], Response::HTTP_OK);
     }
 }
